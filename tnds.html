@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ôn Tập Lịch Sử - Chủ Đề ASEAN 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sakura-bg: #fff5f7;
+      --sakura-card: #ffffff;
+      --sakura-pink: #f7a8b8;
+      --sakura-primary: #e65f78;
+      --sakura-hover: #d24b64;
+      --sakura-soft: #fde8ed;
+      --sakura-accent: #fcd0da;
+      --text-main: #4a343a;
+      --text-muted: #82666e;
+      --correct-bg: #e8f5e9;
+      --correct-color: #2e7d32;
+      --correct-border: #a5d6a7;
+      --wrong-bg: #ffebee;
+      --wrong-color: #c62828;
+      --wrong-border: #ef9a9a;
+      --shadow-soft: 0 8px 24px rgba(247, 168, 184, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #fff0f3 0%, #fff6f8 50%, #fbe7ee 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px 16px 80px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Hiệu ứng cánh hoa anh đào bay */
+    .sakura-petal {
+      position: fixed;
+      top: -20px;
+      pointer-events: none;
+      z-index: 9999;
+      background: #ffb7c5;
+      border-radius: 150% 0 150% 0;
+      opacity: 0.65;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(540deg) translateX(80px);
+      }
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 24px 20px;
+      border-radius: 24px;
+      border: 2px solid var(--sakura-accent);
+      box-shadow: var(--shadow-soft);
+    }
+
+    header h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 26px;
+      color: var(--sakura-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Bảng thông tin thanh trạng thái */
+    .dashboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--sakura-pink);
+    }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 30px;
+      background: var(--sakura-soft);
+      color: var(--sakura-primary);
+    }
+
+    .btn-shuffle {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, var(--sakura-primary), var(--sakura-hover));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(230, 95, 120, 0.3);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-shuffle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(230, 95, 120, 0.4);
+    }
+
+    /* Khung câu hỏi */
+    .question-card {
+      background: var(--sakura-card);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1.5px solid rgba(247, 168, 184, 0.4);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease;
+    }
+
+    .question-header {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--sakura-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .passage-box {
+      background: var(--sakura-soft);
+      padding: 16px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      line-height: 1.6;
+      border-left: 4px solid var(--sakura-primary);
+      margin-bottom: 18px;
+      color: #3b282d;
+    }
+
+    /* Bảng dữ liệu nếu có */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+
+    .data-table th, .data-table td {
+      border: 1px solid var(--sakura-accent);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .data-table th {
+      background: #fcd0da;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Danh sách phát biểu con */
+    .sub-item {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #fff9fb;
+      border: 1px solid #f9dbe3;
+      margin-bottom: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .sub-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .statement-text {
+      font-size: 15px;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .statement-text b {
+      color: var(--sakura-primary);
+      margin-right: 4px;
+    }
+
+    .choice-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-choice {
+      border: 1.5px solid var(--sakura-pink);
+      background: white;
+      color: var(--text-main);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-choice:hover:not(:disabled) {
+      background: var(--sakura-soft);
+      border-color: var(--sakura-primary);
+    }
+
+    /* Trạng thái đúng/sai sau khi chọn */
+    .sub-item.correct {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+    }
+
+    .sub-item.wrong {
+      background: var(--wrong-bg);
+      border-color: var(--wrong-border);
+    }
+
+    .btn-choice.selected-correct {
+      background: var(--correct-color) !important;
+      color: white !important;
+      border-color: var(--correct-color) !important;
+    }
+
+    .btn-choice.selected-wrong {
+      background: var(--wrong-color) !important;
+      color: white !important;
+      border-color: var(--wrong-color) !important;
+    }
+
+    .btn-choice:disabled {
+      cursor: not-allowed;
+      opacity: 0.85;
+    }
+
+    .explanation {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      display: none;
+    }
+
+    .sub-item.correct .explanation {
+      display: block;
+      background: rgba(46, 125, 50, 0.08);
+      color: var(--correct-color);
+      border-left: 3px solid var(--correct-color);
+    }
+
+    .sub-item.wrong .explanation {
+      display: block;
+      background: rgba(198, 40, 40, 0.08);
+      color: var(--wrong-color);
+      border-left: 3px solid var(--wrong-color);
+    }
+
+    @media (max-width: 600px) {
+      .sub-item-header {
+        flex-direction: column;
+      }
+      .choice-buttons {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+      header h1 {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cánh hoa anh đào rơi -->
+  <div id="sakura-container"></div>
+
+  <div class="container">
+    <header>
+      <h1>🌸 ÔN TẬP LỊCH SỬ ASEAN 🌸</h1>
+      <p>Dạng trắc nghiệm Đúng / Sai theo chương trình GDPT mới • Không giới hạn thời gian</p>
+      
+      <div class="dashboard">
+        <div class="stats">
+          <div class="badge" id="answeredCount">Đã làm: 0/28 ý</div>
+          <div class="badge" id="scoreCount">Đúng: 0 | Sai: 0</div>
+        </div>
+        <button class="btn-shuffle" onclick="initQuiz(true)">
+          🔄 Tráo câu hỏi & Làm lại
+        </button>
+      </div>
+    </header>
+
+    <div id="quiz-list"></div>
+  </div>
+
+  <script>
+    // Dữ liệu câu hỏi chuẩn theo file
+    const rawQuestions = [
+      {
+        id: 1,
+        title: "Câu 1: Bối cảnh thành lập ASEAN",
+        passage: "ASEAN ra đời trong bối cảnh thế giới và khu vực có những chuyển biến quan trọng. Một số quốc gia Đông Nam Á sau khi giành độc lập dân tộc từng bước xây dựng và phát triển kinh tế, đưa tới nhu cầu hợp tác khu vực. Điều này được thúc đẩy bởi sự phát triển của xu thế khu vực hóa trên thế giới xuất hiện từ những năm 50, 60 của thế kỉ XX. Trong bối cảnh nhiều nước Đông Nam Á muốn hạn chế ảnh hưởng của các cường quốc bên ngoài, thúc đẩy hợp tác, tương trợ lẫn nhau, từ những năm 60 của thế kỉ XX, một số tổ chức khu vực đã ra đời ở Đông Nam Á.",
+        items: [
+          {
+            label: "a",
+            text: "ASEAN ra đời trong bối cảnh xu thế khu vực hóa đang diễn ra mạnh mẽ trên thế giới.",
+            answer: true,
+            explain: "Chính xác: Đoạn tư liệu nêu rõ xu thế khu vực hóa trên thế giới xuất hiện từ những năm 50, 60 của thế kỉ XX đã thúc đẩy nhu cầu hợp tác khu vực."
+          },
+          {
+            label: "b",
+            text: "ASEAN là Tổ chức liên kết kinh tế - văn hóa bao gồm tất cả các quốc gia khu vực châu Á.",
+            answer: false,
+            explain: "Sai: ASEAN chỉ là tổ chức khu vực Đông Nam Á, không phải toàn bộ châu Á."
+          },
+          {
+            label: "c",
+            text: "ASEAN ra đời khi tất cả các quốc gia Đông Nam Á đều đã giành được độc lập.",
+            answer: false,
+            explain: "Sai: Năm 1967 khi ASEAN thành lập, nhiều quốc gia Đông Nam Á chưa hoàn thành cuộc đấu tranh giành độc lập (như 3 nước Đông Dương) hoặc chưa độc lập (Brunei năm 1984 mới độc lập)."
+          },
+          {
+            label: "d",
+            text: "ASEAN là liên minh quân sự của các quốc gia khu vực Đông Nam Á.",
+            answer: false,
+            explain: "Sai: ASEAN là tổ chức liên kết hợp tác chính trị - kinh tế - văn hóa - an ninh, hoàn toàn không phải một liên minh quân sự."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Câu 2: Mục đích thành lập ASEAN",
+        passage: "ASEAN ra đời nhằm mục đích thúc đẩy tăng trưởng kinh tế, tiến bộ xã hội và phát triển văn hóa trong khu vực thông qua các nỗ lực chung trên tinh thần bình đẳng và hợp tác nhằm tăng cường cơ sở cho một Cộng đồng các quốc gia Đông Nam Á hòa bình và thịnh vượng; Thúc đẩy hòa bình, ổn định khu vực thông qua tôn trọng luật pháp quốc tế.",
+        items: [
+          {
+            label: "a",
+            text: "Mục đích ban đầu của Tổ chức ASEAN là hợp tác chính trị, tiền tệ giữa các nước thành viên.",
+            answer: false,
+            explain: "Sai: Mục đích ban đầu tập trung vào hợp tác kinh tế, văn hóa, xã hội và duy trì hòa bình, ổn định khu vực."
+          },
+          {
+            label: "b",
+            text: "ASEAN ra đời với mục tiêu chính là hợp tác về kinh tế, văn hóa, xã hội giữa các nước thành viên.",
+            answer: true,
+            explain: "Chính xác: Đúng với Tuyên bố Băng Cốc (1967) và nội dung đoạn trích."
+          },
+          {
+            label: "c",
+            text: "ASEAN ra đời nhằm liên minh phòng thủ chống lại sự bành trướng của chủ nghĩa thực dân ở Đông Nam Á.",
+            answer: false,
+            explain: "Sai: ASEAN không mang mục tiêu liên minh phòng thủ quân sự."
+          },
+          {
+            label: "d",
+            text: "ASEAN là Tổ chức liên kết kinh tế, văn hóa, xã hội giữa các nước khu vực Đông Bắc Á.",
+            answer: false,
+            explain: "Sai: ASEAN là của các nước khu vực Đông Nam Á, không phải Đông Bắc Á."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Câu 3: Quá trình mở rộng thành viên ASEAN",
+        passage: `Cho bảng dữ kiện về Quá trình phát triển của ASEAN:
+          <table class="data-table">
+            <tr><th>Năm</th><th>Quốc gia gia nhập ASEAN</th></tr>
+            <tr><td>1967</td><td>Thái Lan, Malaysia, Philipin, Indonesia, Singapo thành lập ASEAN</td></tr>
+            <tr><td>1984</td><td>Brunei</td></tr>
+            <tr><td>1995</td><td>Việt Nam</td></tr>
+            <tr><td>1997</td><td>Lào và Mianma</td></tr>
+            <tr><td>1999</td><td>Campuchia</td></tr>
+          </table>`,
+        items: [
+          {
+            label: "a",
+            text: "ASEAN được sáng lập bởi tất cả các quốc gia khu vực Đông Nam Á.",
+            answer: false,
+            explain: "Sai: ASEAN chỉ được sáng lập bởi 5 quốc gia đầu tiên (Thái Lan, Malaysia, Indonesia, Philippines, Singapore)."
+          },
+          {
+            label: "b",
+            text: "Hành trình phát triển của Tổ chức ASEAN từ ASEAN 5 lên ASEAN 10 trải qua hơn 30 năm.",
+            answer: true,
+            explain: "Chính xác: Từ năm 1967 đến năm 1999 (khi Campuchia gia nhập) là 32 năm (hơn 30 năm)."
+          },
+          {
+            label: "c",
+            text: "Năm 1995, Việt Nam trở thành thành viên thứ 7 của ASEAN.",
+            answer: true,
+            explain: "Chính xác: 5 nước sáng lập + Brunei (1984 - thứ 6) + Việt Nam (1995 - thứ 7)."
+          },
+          {
+            label: "d",
+            text: "ASEAN do các quốc gia Đông Nam Á nằm trên bán đảo Đông Dương sáng lập.",
+            answer: false,
+            explain: "Sai: Cả 5 nước sáng lập không có nước nào thuộc bán đảo Đông Dương (Việt Nam, Lào, Campuchia)."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Câu 4: Các mốc lịch sử phát triển của ASEAN",
+        passage: `Cho bảng dữ kiện về Quá trình phát triển của ASEAN:
+          <table class="data-table">
+            <tr><th>Năm</th><th>Sự kiện</th></tr>
+            <tr><td>1967</td><td>Thái Lan, Malaysia, Philipin, Indonesia, Singapo thành lập ASEAN</td></tr>
+            <tr><td>1976</td><td>Hiệp ước Bali được kí kết đánh dấu bước ngoặt của ASEAN</td></tr>
+            <tr><td>1999</td><td>Campuchia trở thành thành viên thứ 10 của ASEAN</td></tr>
+            <tr><td>2007</td><td>Hiến chương ASEAN được thông qua</td></tr>
+            <tr><td>2015</td><td>Thành lập Cộng đồng ASEAN nhằm đẩy mạnh liên kết, hợp tác giữa các nước thành viên về kinh tế, văn hóa, xã hội</td></tr>
+          </table>`,
+        items: [
+          {
+            label: "a",
+            text: "ASEAN hợp tác chặt chẽ và phát triển rõ rệt kể từ sau Hiệp ước Bali được kí kết (2/1976).",
+            answer: true,
+            explain: "Chính xác: Hiệp ước Bali (Hiệp ước Thân thiện và Hợp tác - TAC) đánh dấu bước ngoặt lớn về thể chế và phương thức hợp tác của ASEAN."
+          },
+          {
+            label: "b",
+            text: "Một trong những lĩnh vực hợp tác của ASEAN là thương mại.",
+            answer: true,
+            explain: "Chính xác: Hợp tác thương mại và kinh tế là một trong những trụ cột then chốt hàng đầu của ASEAN (như hình thành AFTA, AEC)."
+          },
+          {
+            label: "c",
+            text: "Năm 2015, Cộng đồng ASEAN ra đời biến ASEAN thành tổ chức siêu quốc gia.",
+            answer: false,
+            explain: "Sai: ASEAN duy trì nguyên tắc đồng thuận và tôn trọng chủ quyền, không phải là tổ chức 'siêu quốc gia' (như Liên minh Châu Âu EU)."
+          },
+          {
+            label: "d",
+            text: "2007, khuôn khổ pháp lý và thể chế cho hợp tác giữa các nước ASEAN được thông qua.",
+            answer: true,
+            explain: "Chính xác: Năm 2007, Hiến chương ASEAN được ký kết tạo cơ sở pháp lý và khuôn khổ thể chế chặt chẽ cho toàn khối."
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Câu 5: Ý tưởng xây dựng Cộng đồng ASEAN",
+        passage: "Tại Tuyên bố Băng Cốc (1967) đã nêu ra mục tiêu xây dựng một cộng đồng thịnh vượng và hòa bình ở Đông Nam Á. Năm 1997, ý tưởng xây dựng Cộng đồng ASEAN được chính thức khẳng định thông qua văn kiện Tầm nhìn ASEAN 2020. Tầm nhìn ASEAN 2020 là văn bản đầu tiên đề xuất ý tưởng xây dựng một Cộng đồng ASEAN có nhận thức về các mối quan hệ lịch sử, gắn bó với nhau trong một khu vực chung, cùng nhau gìn giữ hòa bình, hướng tới ổn định, tương trợ, hợp tác phát triển phồn vinh, tăng cường vị thế của ASEAN trên trường quốc tế.",
+        items: [
+          {
+            label: "a",
+            text: "Ý tưởng xây dựng Cộng đồng ASEAN khởi nguồn từ khi tổ chức này thành lập.",
+            answer: true,
+            explain: "Chính xác: Ngay tại Tuyên bố Băng Cốc năm 1967 đã nêu mục tiêu xây dựng một cộng đồng thịnh vượng và hòa bình."
+          },
+          {
+            label: "b",
+            text: "Năm 2020, ý tưởng xây dựng Cộng đồng ASEAN chính thức được thông qua.",
+            answer: false,
+            explain: "Sai: Ý tưởng được chính thức thông qua vào năm 1997 thông qua văn kiện 'Tầm nhìn ASEAN 2020'."
+          },
+          {
+            label: "c",
+            text: "Ý tưởng xây dựng Cộng đồng ASEAN được chính thức thông qua khi tất cả các quốc gia Đông Nam Á đã gia nhập ASEAN.",
+            answer: false,
+            explain: "Sai: Năm 1997 khi thông qua ý tưởng (Tầm nhìn ASEAN 2020), Campuchia vẫn chưa gia nhập (đến năm 1999 Campuchia mới gia nhập)."
+          },
+          {
+            label: "d",
+            text: "ASEAN đã trải qua 30 năm phát triển từ khi ý tưởng thành lập Cộng đồng ASEAN ra đời đến khi ý tưởng này chính thức được thông qua.",
+            answer: true,
+            explain: "Chính xác: Từ 1967 đến 1997 là tròn 30 năm."
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "Câu 6: Cộng đồng Văn hóa – Xã hội ASEAN (ASCC)",
+        passage: "Các hoạt động hợp tác trong khuôn khổ kế hoạch tổng thể xây dựng ASCC đang được thúc đẩy trên nhiều lĩnh vực. Về phát triển con người, ASEAN khuyến khích phát triển giáo dục suốt đời và sử dụng công nghệ thông tin làm phương tiện thúc đẩy nền giáo dục ASEAN. Về các quyền và bình đẳng xã hội, ASEAN đẩy mạnh hợp tác bảo vệ quyền của các nhóm yếu thế như phụ nữ, trẻ em, người già, người khuyết tật, người lao động di cư,...",
+        items: [
+          {
+            label: "a",
+            text: "Đoạn tư liệu trên thể hiện nội dung của Cộng đồng Văn hóa – Xã hội ASEAN.",
+            answer: true,
+            explain: "Chính xác: ASCC là viết tắt của ASEAN Socio-Cultural Community (Cộng đồng Văn hóa - Xã hội ASEAN)."
+          },
+          {
+            label: "b",
+            text: "ASCC xây dựng một ASEAN lấy con người làm trung tâm.",
+            answer: true,
+            explain: "Chính xác: ASCC chú trọng phát triển con người, bảo vệ quyền của mọi công dân và đối tượng yếu thế trong xã hội."
+          },
+          {
+            label: "c",
+            text: "ASCC là khuôn khổ hợp tác xây dựng ASEAN thành một thị trường thống nhất.",
+            answer: false,
+            explain: "Sai: Thị trường thống nhất và cơ sở sản xuất chung là mục tiêu của Cộng đồng Kinh tế ASEAN (AEC), không phải ASCC."
+          },
+          {
+            label: "d",
+            text: "ASCC bảo vệ quyền bình đẳng của con người.",
+            answer: true,
+            explain: "Chính xác: Đoạn tư liệu nêu rõ việc hợp tác bảo vệ quyền bình đẳng xã hội cho phụ nữ, trẻ em, người lao động di cư..."
+          }
+        ]
+      },
+      {
+        id: 7,
+        title: "Câu 7: Những thách thức của Cộng đồng ASEAN",
+        passage: "Trong quá trình phát triển Cộng đồng ASEAN phải đối mặt với những thách thức như sự đa dạng về chế độ chính trị, tình hình chính trị ở một số nước còn phức tạp, còn tồn tại một số mâu thuẫn trong quan hệ song phương, sự chênh lệch về thu nhập, trình độ phát triển giữa các nước gây trở ngại cho hợp tác. Bên cạnh đó sự cạnh tranh ảnh hưởng các nước lớn đối với khu vực, diễn biến phức tạp của tình hình Biển Đông và tình hình quốc tế; biến đổi khí hậu, ô nhiễm môi trường, dịch bệnh… đặt ra những thách thức không nhỏ cho Cộng đồng ASEAN.",
+        items: [
+          {
+            label: "a",
+            text: "Cộng đồng ASEAN phải đối mặt với những thách thức trong nội khối và cả bên ngoài.",
+            answer: true,
+            explain: "Chính xác: Thách thức nội khối (chênh lệch trình độ, chính trị, tranh chấp song phương) và bên ngoài (nước lớn cạnh tranh, dịch bệnh, biến đổi khí hậu)."
+          },
+          {
+            label: "b",
+            text: "Những thách thức của Cộng đồng ASEAN đến từ nhiều phương diện như: kinh tế, chính trị, văn hóa...",
+            answer: true,
+            explain: "Chính xác: Bao gồm cả phương diện an ninh truyền thống và phi truyền thống (môi trường, dịch bệnh, kinh tế, thể chế)."
+          },
+          {
+            label: "c",
+            text: "Sự cạnh tranh của các cường quốc ở Biển Đông là một trong những thách thức của Cộng đồng ASEAN.",
+            answer: true,
+            explain: "Chính xác: Đoạn tư liệu chỉ rõ diễn biến cạnh tranh của các nước lớn và tình hình Biển Đông là thách thức lớn đối với hòa bình và vai trò trung tâm của ASEAN."
+          },
+          {
+            label: "d",
+            text: "Cộng đồng ASEAN chịu sự chi phối của trật tự thế giới hai cực Ianta.",
+            answer: false,
+            explain: "Sai: Trật tự 2 cực Ianta đã sụp đổ vào năm 1991, trong khi Cộng đồng ASEAN được thành lập vào năm 2015 trong trật tự thế giới đa cực."
+          }
+        ]
+      }
+    ];
+
+    // Thuật toán tráo ngẫu nhiên mảng (Fisher-Yates)
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    let userState = {
+      answered: 0,
+      correct: 0,
+      wrong: 0,
+      totalItems: 28
+    };
+
+    function updateStats() {
+      document.getElementById('answeredCount').textContent = `Đã làm: ${userState.answered}/${userState.totalItems} ý`;
+      document.getElementById('scoreCount').innerHTML = `Đúng: <span style="color:var(--correct-color)">${userState.correct}</span> | Sai: <span style="color:var(--wrong-color)">${userState.wrong}</span>`;
+    }
+
+    function checkAnswer(btn, userChoice, isCorrect, explainText, subItemId) {
+      const container = document.getElementById(subItemId);
+      const buttons = container.querySelectorAll('.btn-choice');
+      
+      // Khóa nút không cho chọn lại
+      buttons.forEach(b => b.disabled = true);
+
+      userState.answered++;
+
+      if (userChoice === isCorrect) {
+        userState.correct++;
+        container.classList.add('correct');
+        btn.classList.add('selected-correct');
+      } else {
+        userState.wrong++;
+        container.classList.add('wrong');
+        btn.classList.add('selected-wrong');
+        
+        // Highlight nút đúng cho người học dễ nhận biết
+        buttons.forEach(b => {
+          const isButtonTrue = (b.textContent.trim() === 'Đúng');
+          if (isButtonTrue === isCorrect) {
+            b.style.borderColor = 'var(--correct-color)';
+            b.style.color = 'var(--correct-color)';
+            b.style.fontWeight = '800';
+          }
+        });
+      }
+
+      updateStats();
+    }
+
+    function renderQuiz(questions) {
+      const quizList = document.getElementById('quiz-list');
+      quizList.innerHTML = '';
+
+      questions.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        // Shuffle các phát biểu a, b, c, d nếu muốn hoặc giữ nguyên nhãn a, b, c, d
+        let subItemsHtml = '';
+        q.items.forEach((item, itemIdx) => {
+          const subId = `sub_${q.id}_${itemIdx}`;
+          subItemsHtml += `
+            <div class="sub-item" id="${subId}">
+              <div class="sub-item-header">
+                <div class="statement-text">
+                  <b>${item.label})</b> ${item.text}
+                </div>
+                <div class="choice-buttons">
+                  <button class="btn-choice" onclick="checkAnswer(this, true, ${item.answer}, '${item.explain.replace(/'/g, "\\'")}', '${subId}')">Đúng</button>
+                  <button class="btn-choice" onclick="checkAnswer(this, false, ${item.answer}, '${item.explain.replace(/'/g, "\\'")}', '${subId}')">Sai</button>
+                </div>
+              </div>
+              <div class="explanation">
+                <strong>${item.answer ? '✔️ ĐÁP ÁN: ĐÚNG' : '❌ ĐÁP ÁN: SAI'}</strong> — ${item.explain}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="question-header">
+            <span>🌸 ${q.title}</span>
+          </div>
+          <div class="passage-box">
+            ${q.passage}
+          </div>
+          <div class="sub-list">
+            ${subItemsHtml}
+          </div>
+        `;
+
+        quizList.appendChild(card);
+      });
+    }
+
+    function initQuiz(isShuffle = false) {
+      userState = {
+        answered: 0,
+        correct: 0,
+        wrong: 0,
+        totalItems: 28
+      };
+      updateStats();
+
+      let questionsToRender = JSON.parse(JSON.stringify(rawQuestions));
+      if (isShuffle) {
+        questionsToRender = shuffleArray(questionsToRender);
+        // Tráo luôn thứ tự các ý a, b, c, d trong câu hỏi
+        questionsToRender.forEach(q => {
+          q.items = shuffleArray(q.items);
+        });
+      }
+      renderQuiz(questionsToRender);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Hiệu ứng cánh hoa anh đào rơi nhẹ
+    function createSakuraPetals() {
+      const container = document.getElementById('sakura-container');
+      const petalCount = 18;
+
+      for (let i = 0; i < petalCount; i++) {
+        setTimeout(() => {
+          const petal = document.createElement('div');
+          petal.className = 'sakura-petal';
+          petal.style.left = Math.random() * 100 + 'vw';
+          petal.style.animationDuration = 7 + Math.random() * 8 + 's';
+          petal.style.animationDelay = Math.random() * 5 + 's';
+          
+          const size = 10 + Math.random() * 12;
+          petal.style.width = size + 'px';
+          petal.style.height = (size * 1.3) + 'px';
+
+          container.appendChild(petal);
+
+          petal.addEventListener('animationend', () => {
+            petal.remove();
+            createSinglePetal();
+          });
+        }, i * 300);
+      }
+    }
+
+    function createSinglePetal() {
+      const container = document.getElementById('sakura-container');
+      const petal = document.createElement('div');
+      petal.className = 'sakura-petal';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = 7 + Math.random() * 8 + 's';
+      
+      const size = 10 + Math.random() * 12;
+      petal.style.width = size + 'px';
+      petal.style.height = (size * 1.3) + 'px';
+
+      container.appendChild(petal);
+
+      petal.addEventListener('animationend', () => {
+        petal.remove();
+        createSinglePetal();
+      });
+    }
+
+    // Khởi chạy khi tải trang
+    document.addEventListener('DOMContentLoaded', () => {
+      initQuiz(false);
+      createSakuraPetals();
+    });
+  </script>
+</body>
+</html>
